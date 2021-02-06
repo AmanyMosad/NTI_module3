@@ -46,36 +46,88 @@ btnNames=[];
 document.querySelectorAll('button').forEach((btn, i)=>{
     btnNames[i] = btn.innerText;
 })
-console.log(btnNames);
 
 customers = getCustomers()
 addbtn = document.querySelector('#addbBtn')
 showAllBtn = document.querySelector('#showAllBtn')
 showBtn=document.querySelector('#showBtn')
+addBalanceBtn =document.querySelector('#addBalanceBtn')
+withDrawBtn=document.querySelector('#withDrawBtn')
 function getCustomers(){
     return(JSON.parse(localStorage.getItem('customers')) || [])
 }
 const saveCustomers = function(){
     localStorage.setItem('customers', JSON.stringify(customers))
 }
+function createNewElement(parent, element, txt='',attributes=[], classes='' ){
+    myNewElement = document.createElement(element)
+    if(classes!='') myNewElement.className=classes
+    if(txt!='') myNewElement.innerText = txt
+    if(attributes.length!=0){
+        attributes.forEach(attribute=>{
+            myNewElement.setAttribute(attribute.attrName,attribute.attrVal)
+        })    
+    }
+    parent.appendChild(myNewElement)
+    return myNewElement
+}
 const showAllCustomers = function(){
     customers = getCustomers()
     tableBody = document.querySelector('tbody')
     tableBody.innerText=''
-    customers.forEach(customer=>{
+    customers.forEach((customer, i)=>{
         // console.log(customer)
-        let tr = document.createElement('tr')
-        td = document.createElement('td')
-        td.textContent = customer.accNum
-        tr.appendChild(td)
-        td = document.createElement('td')
-        td.textContent = customer.cName
-        tr.appendChild(td)
-        td = document.createElement('td')
-        td.textContent = customer.balance
-        tr.appendChild(td)
-        tableBody.appendChild(tr)
+       
+        let tr =  createNewElement(tableBody, 'tr')
+        createNewElement(tr, 'td', customer.accNum)
+        createNewElement(tr, 'td', customer.cName)
+        createNewElement(tr, 'td', customer.balance)
+        let btn = createNewElement(tr, 'td')
+        createNewElement(btn, 'button', 'Edit', [{attrName:'data-cid', attrVal:customer.accNum}], 'btn btn-primary me-3 col-3 edit')
+        createNewElement(btn, 'button', 'Delete', [{attrName:'data-cid', attrVal:customer.accNum}], 'btn btn-danger col-3 delete')
     })
+
+    let myclass = document.getElementsByClassName('edit')
+
+    for (var i = 0; i < myclass.length; i++)
+    {
+        myclass[i].addEventListener('click', function(e){
+            if (this.innerText == "Edit")
+            {
+                editCustomer(this.getAttribute('data-cid'))
+            }
+            else
+            {
+                let id = this.getAttribute('data-cid')
+
+                index = customers.findIndex((ele)=>{
+                    return id==ele.accNum
+                })
+                
+                let mytd = document.querySelectorAll('tbody tr')[index].querySelectorAll('td')
+                let allKeys = Object.keys(customers[index])
+            
+                for (var i = 1; i < 3; i++)
+                {
+                    mytd[i].innerText=mytd[i].getElementsByTagName('input')[0].value
+                    customers[index][allKeys[i]] = mytd[i].innerText
+                }
+
+                saveCustomers()
+
+                this.innerText = "Edit"
+            }
+        })
+    }
+    
+    myclass = document.getElementsByClassName('delete')
+    
+    for (var i = 0; i < myclass.length; i++)
+    {
+        myclass[i].addEventListener('click', function(e){
+            deleteCustomer(this.getAttribute('data-cid'))
+        })
+    }
     // console.log(customers)
 }
 const addCustomer = function(customer){
@@ -151,3 +203,40 @@ document.querySelector('.searchsubmit').addEventListener('submit',function(e){
       singletabel.appendChild(tr)
   }
 })
+
+const deleteCustomer = function(id){
+   customers = customers.filter((ele)=>{
+         return id!=ele.accNum
+    })
+
+    saveCustomers()
+    showAllCustomers()
+}
+
+const editCustomer = function(id){
+    index= customers.findIndex((ele)=>{
+        return id==ele.accNum
+    })
+    
+    let mytd = document.querySelectorAll('tbody tr')[index].querySelectorAll('td')
+
+    for (var i = 1; i < 3; i++)
+    {
+        let myval = mytd[i].innerText
+        mytd[i].innerText = ''
+        createNewElement(mytd[i], 'input', '',[{'attrName':'value', 'attrVal':myval}], '')
+    }
+
+    mytd[3].querySelector('td button').innerText = 'Save'
+}
+
+addBalanceBtn.addEventListener('click',function(e){
+    showHide(addBalanceBtn, 'addbalance', 'Add Balance','Hide Adding')
+})
+withDrawBtn.addEventListener('click',function(e){
+    showHide(withDrawBtn, 'withdraw', 'Withdraw','Hide withdraw')
+})
+function addBalance()
+{
+        
+}

@@ -35,16 +35,16 @@
               <input type="submit" class="btn btn-success" value="add Customer">
         </form>
     </section>
-    <section id="allCustomers" class="container border border-2 my-3 d-none">
+    <section id="allCustomers" class="container my-3 d-none">
         <table class="table">
             <thead>
                 <th>id</th>
                 <th>Name</th>
                 <th>Balance</th>
-            
+                <th>actions</th>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </section>
@@ -65,6 +65,22 @@
             </tbody>
           
         </table>
+    </section>
+
+    <section id = "addbalance" class="row col-8 m-auto my-3 d-none">
+        <form class="mb-3 col-12 m-auto justify-content-evenly d-flex addbalanceform">
+            <input type="text" class="col-4 offset-1" placeholder="enter id" name="balanceid">
+            <input type="text" class="col-4 offset-1" placeholder="enter value" name="balanceadded">
+            <input type="submit" class="btn btn-success offset-1 col-2" value="add">
+        </form>
+    </section>
+
+    <section id = "withdraw" class="row col-8 m-auto my-3 d-none">
+        <form class="mb-3 col-12 m-auto justify-content-evenly d-flex addbalanceform">
+            <input type="text" class="col-4 offset-1" placeholder="enter id" name="withdrawid">
+            <input type="text" class="col-4 offset-1" placeholder="enter value" name="withdrawvalue">
+            <input type="submit" class="btn btn-success offset-1 col-2" value="Withdraw">
+        </form>
     </section>
     <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>

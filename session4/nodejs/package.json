@@ -1,0 +1,19 @@
+{
+  "name": "amany",
+  "version": "3.0.5",
+  "description": "hello node js",
+  "main": "index.js",
+  "scripts": {
+    "test": "hello"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "nti"
+  ],
+  "author": "amany mosad",
+  "license": "ISC",
+  "dependencies": {
+    "validator": "^13.5.2"
+  }
+}
